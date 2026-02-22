@@ -1,45 +1,109 @@
-# Credit Risk Simulation (PD / LGD / EAD) + Data Quality (BCBS239 mindset)
 
-This repository demonstrates an end-to-end **credit risk analytics** workflow on a **synthetic** portfolio:
-- Generate a loan-level dataset (reproducible)
-- Train a **PD** model (logistic regression) and evaluate AUC + calibration
-- Estimate **LGD** and **EAD** using transparent baselines
-- Compute **Expected Loss (EL = PD × LGD × EAD)**
-- Run **macro stress scenarios** (baseline / mild / severe)
-- Add **Data Quality controls** (completeness, uniqueness, validity) and a DQ scorecard
-- Produce management-ready **HTML reports** (risk + DQ) with figures
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![SQL](https://img.shields.io/badge/SQL-DuckDB-lightgrey)
+![Status](https://img.shields.io/badge/Status-Active-success)
 
-> Disclaimer: This is a transparent simulation for portfolio analytics & data governance demonstration. It is **not** a regulatory IRB model.
+# 🚀 Credit Risk Simulation (PD / LGD / EAD)
 
-## Quickstart
+End-to-end **credit risk analytics pipeline** combining modeling, data quality, and reporting.
+
+---
+
+## 🎯 Business Objective
+
+Simulate a credit portfolio and deliver **reliable, explainable risk metrics** to support:
+
+* Risk management decisions
+* Capital estimation logic
+* Data governance and quality control
+
+---
+
+## 🧩 Key Features
+
+* 📊 **Probability of Default (PD)** modeling (Logistic Regression, AUC, calibration)
+* 💸 **LGD & EAD estimation** (transparent, explainable approach)
+* ⚠️ **Expected Loss (EL)** computation at portfolio level
+* 🌍 **Macro stress testing scenarios** (baseline, mild, severe recession)
+* 🧪 **Data Quality framework** (completeness, validity, reconciliation)
+* 📈 **Management-ready reporting** (HTML dashboards)
+
+---
+
+## 📸 Outputs
+
+### Risk Overview
+
+![Risk](reports/figures/screenshots/risk_overview.png)
+
+### Stress Testing
+
+![Stress](reports/figures/screenshots/stress_testing.png)
+
+### Data Quality
+
+![DQ](reports/figures/screenshots/data_quality.png)
+
+---
+
+## ⚙️ Quickstart
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate
+.venv\Scripts\activate   # Windows
 pip install -r requirements.txt
 
-# Run end-to-end (generates data + reports)
 python -m src.crsim.report
 ```
 
 Outputs:
-- `reports/risk_report.html`
-- `reports/dq_report.html`
-- figures in `reports/figures/`
 
-## What this showcases (aligned with Nordea role)
-- Root-cause mindset for data issues + reconciliation checks
-- Data governance framing (critical elements, controls, lineage-light)
-- Analytical tooling and reporting for stakeholders
-- Scenario thinking (stress testing) and structured deliveries
+* `reports/risk_report.html`
+* `reports/dq_report.html`
 
-## Repo structure
-- `src/crsim/` : core Python modules
-- `sql/` : optional DuckDB schema + transformations + DQ query examples
-- `reports/` : generated HTML reports
-- `data/synthetic/` : generated synthetic dataset (parquet)
+---
 
-## Suggested extension ideas
-- Replace LGD baseline with beta regression
-- Add scorecards by portfolio segments (rating, country, product)
-- Add monitoring (PSI / drift) and model versioning
+## 🧠 What this project demonstrates
+
+* Strong analytical mindset applied to **credit risk modeling**
+* Ability to build **end-to-end data pipelines**
+* Understanding of **data governance & BCBS239 principles**
+* Capability to deliver **business-ready insights from raw data**
+
+---
+
+## 🏗️ Architecture
+
+```
+Raw Data → Feature Engineering → PD Model → LGD/EAD → Expected Loss → Reporting
+                         ↓
+                  Data Quality Checks
+```
+
+---
+
+## 📁 Repository Structure
+
+* `src/crsim/` — core Python modules
+* `sql/` — schema, transformations, data quality queries
+* `reports/` — generated reports
+* `data/synthetic/` — synthetic dataset
+
+---
+
+## ⚠️ Disclaimer
+
+This is a **simulation project** designed to demonstrate credit risk analytics and data governance concepts.
+It is not a regulatory IRB model.
+
+---
+
+## 🎯 Why this project
+
+This project reflects my ability to work at the intersection of:
+
+* Data engineering
+* Risk analytics
+* Business decision-making
+
+With a strong focus on **data quality, transparency, and impact**.

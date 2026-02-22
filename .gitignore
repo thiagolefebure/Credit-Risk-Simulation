@@ -12,3 +12,10 @@ dist/
 data/synthetic/
 reports/*.html
 reports/figures/
+# Ignore generated reports/figures by default
+reports/figures/*
+
+# But keep curated screenshots
+!reports/figures/
+!reports/figures/screenshots/
+!reports/figures/screenshots/**
