@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.dist/
+build/
+dist/
+.venv/
+.env
+.ipynb_checkpoints/
+data/synthetic/
+reports/*.html
+reports/figures/

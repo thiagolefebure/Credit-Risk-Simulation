@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Credit Risk Simulation — Data Quality Report</title>
+  <style>
+    body { font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 32px; line-height: 1.35; }
+    h1,h2 { margin: 0 0 12px 0; }
+    .muted { color: #555; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 12px; margin: 12px 0; }
+    .k { font-size: 12px; color: #666; }
+    .v { font-size: 22px; font-weight: 700; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+    th, td { border-bottom: 1px solid #eee; padding: 8px; text-align: left; font-size: 13px; }
+    th { background: #fafafa; }
+  </style>
+</head>
+<body>
+  <h1>Credit Risk Simulation — Data Quality Report</h1>
+  <div class="muted">Generated at: {{ generated_at }}</div>
+
+  <div class="card">
+    <div class="k">DQ score (0-100)</div>
+    <div class="v">{{ "%.1f"|format(dq.dq_score) }}</div>
+    <div class="muted">Based on completeness, uniqueness, validity and basic reconciliations.</div>
+  </div>
+
+  <h2>Scorecard</h2>
+  <table>
+    <tbody>
+      <tr><th>Total rows</th><td>{{ dq.total_rows }}</td></tr>
+      <tr><th>Missing income</th><td>{{ dq.missing_income }}</td></tr>
+      <tr><th>Missing LTV</th><td>{{ dq.missing_ltv }}</td></tr>
+      <tr><th>Duplicate loan_id</th><td>{{ dq.duplicate_loan_ids }}</td></tr>
+      <tr><th>Invalid product_type</th><td>{{ dq.invalid_product_type }}</td></tr>
+      <tr><th>Negative balance</th><td>{{ dq.negative_balance }}</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Top issues & recommended actions</h2>
+  <table>
+    <thead>
+      <tr><th>Issue</th><th>Count</th><th>Recommended action</th></tr>
+    </thead>
+    <tbody>
+      {% for i in top_issues %}
+      <tr>
+        <td>{{ i.issue }}</td>
+        <td>{{ i.count }}</td>
+        <td>{{ i.action }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="muted" style="margin-top:18px;">
+    BCBS239-aligned mindset: define critical data elements, enforce controls, document lineage, and monitor issues over time.
+  </div>
+</body>
+</html>

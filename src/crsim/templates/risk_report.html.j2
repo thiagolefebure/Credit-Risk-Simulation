@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Credit Risk Simulation — Risk Report</title>
+  <style>
+    body { font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 32px; line-height: 1.35; }
+    h1,h2 { margin: 0 0 12px 0; }
+    .muted { color: #555; }
+    .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 12px; }
+    .k { font-size: 12px; color: #666; }
+    .v { font-size: 18px; font-weight: 650; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+    th, td { border-bottom: 1px solid #eee; padding: 8px; text-align: left; font-size: 13px; }
+    th { background: #fafafa; }
+    img { max-width: 100%; border: 1px solid #eee; border-radius: 12px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .small { font-size: 12px; }
+    .pill { display: inline-block; border: 1px solid #ddd; padding: 4px 10px; border-radius: 999px; font-size: 12px; margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Credit Risk Simulation — Risk Report</h1>
+  <div class="muted">Generated at: {{ generated_at }} | Model: Logistic Regression (PD) | AUC: {{ "%.3f"|format(auc) }}</div>
+
+  <div class="cards">
+    <div class="card"><div class="k">Total Expected Loss (EL)</div><div class="v">{{ "%.0f"|format(portfolio.EL_total) }}</div></div>
+    <div class="card"><div class="k">Mean EL (loan-level)</div><div class="v">{{ "%.2f"|format(portfolio.EL_mean) }}</div></div>
+    <div class="card"><div class="k">EL 95th percentile</div><div class="v">{{ "%.2f"|format(portfolio.EL_p95) }}</div></div>
+    <div class="card"><div class="k">EL Std (proxy UL)</div><div class="v">{{ "%.2f"|format(portfolio.EL_std) }}</div></div>
+  </div>
+
+  <h2>Figures</h2>
+  <div class="grid2">
+    <div>
+      <div class="pill">PD distribution</div>
+      <img src="{{ figures.pd_distribution }}" alt="PD distribution"/>
+    </div>
+    <div>
+      <div class="pill">Calibration</div>
+      <img src="{{ figures.pd_calibration }}" alt="Calibration"/>
+    </div>
+  </div>
+  <div style="margin-top:14px;">
+    <div class="pill">Scenario stress</div>
+    <img src="{{ figures.el_by_scenario }}" alt="EL by scenario"/>
+  </div>
+
+  <h2>Scenario results (portfolio)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Scenario</th>
+        <th>EL total</th>
+        <th>EL mean</th>
+        <th>EL p95</th>
+        <th>EL std (proxy)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in stress %}
+      <tr>
+        <td>{{ r.scenario }}</td>
+        <td>{{ "%.0f"|format(r.EL_total) }}</td>
+        <td>{{ "%.2f"|format(r.EL_mean) }}</td>
+        <td>{{ "%.2f"|format(r.EL_p95) }}</td>
+        <td>{{ "%.2f"|format(r.EL_std) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Top segments by EL (sample)</h2>
+  <div class="muted small">Top 25 rows by EL_total across country × product × PD band.</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Country</th><th>Product</th><th>PD band</th><th>Loans</th><th>EAD total</th><th>EL total</th><th>PD mean</th><th>LGD mean</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in seg_table %}
+      <tr>
+        <td>{{ r.country }}</td>
+        <td>{{ r.product_type }}</td>
+        <td>{{ r.pd_band }}</td>
+        <td>{{ r.loans }}</td>
+        <td>{{ "%.0f"|format(r.ead_total) }}</td>
+        <td>{{ "%.0f"|format(r.el_total) }}</td>
+        <td>{{ "%.3f"|format(r.pd_mean) }}</td>
+        <td>{{ "%.3f"|format(r.lgd_mean) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Data lineage (light)</h2>
+  <ul>
+    {% for n in lineage %}
+      <li><b>{{ n.name }}</b> — <span class="muted">{{ n.description }}</span></li>
+    {% endfor %}
+  </ul>
+
+  <div class="muted small" style="margin-top:18px;">
+    Disclaimer: This repository provides a transparent simulation for portfolio analytics and data governance demonstration. It is not a regulatory IRB model.
+  </div>
+</body>
+</html>
